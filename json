@@ -1,0 +1,110 @@
+// Show the correct page
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+}
+
+// Save new sensor data
+function saveData() {
+    const sensorId = document.getElementById('sensor_id').value;
+    const pm25 = document.getElementById('pm25').value;
+    const pm10 = document.getElementById('pm10').value;
+
+    if (sensorId && pm25 && pm10) {
+        fetch('/save_data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sensor_id: sensorId, pm25: pm25, pm10: pm10 })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message || data.error);
+            document.getElementById('sensor-form').reset();
+            updateDataView();
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+        alert('Будь ласка, заповніть всі поля!');
+    }
+}
+
+// Display saved data
+function updateDataView() {
+    fetch('/get_data')
+    .then(response => response.json())
+    .then(data => {
+        const dataContainer = document.getElementById('data-container');
+        if (data.length > 0) {
+            dataContainer.innerHTML = `
+                <table>
+                    <tr><th>ID Сенсора</th><th>PM2.5 (μg/m³)</th><th>PM10 (μg/m³)</th></tr>
+                    ${data.map(d => `<tr><td>${d.sensor_id}</td><td>${d.pm25}</td><td>${d.pm10}</td></tr>`).join('')}
+                </table>`;
+        } else {
+            dataContainer.innerHTML = '<p>Немає даних</p>';
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Edit sensor data
+function editData() {
+    const sensorId = document.getElementById('edit_sensor_id').value;
+    const pm25 = document.getElementById('edit_pm25').value;
+    const pm10 = document.getElementById('edit_pm10').value;
+
+    if (sensorId) {
+        fetch('/edit_data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sensor_id: sensorId, pm25: pm25, pm10: pm10 })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message || data.error);
+            document.getElementById('edit-form').reset();
+            updateDataView();
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+        alert('Будь ласка, введіть ID сенсора д
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+mongoose.connect('mongodb://localhost:27017/air_quality', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const SensorDataSchema = new mongoose.Schema({
+  sensorId: String,
+  pm25: Number,
+  pm10: Number,
+  timestamp: { type: Date, default: Date.now },
+});
+
+const SensorData = mongoose.model('SensorData', SensorDataSchema);
+
+// Endpoint для додавання даних
+app.post('/addData', async (req, res) => {
+  const { sensorId, pm25, pm10 } = req.body;
+  const data = new SensorData({ sensorId, pm25, pm10 });
+  await data.save();
+  res.json({ message: 'Дані збережено' });
+});
+
+// Endpoint для отримання даних
+app.get('/getData', async (req, res) => {
+  const data = await SensorData.find().sort({ timestamp: -1 });
+  res.json(data);
+});
+
+app.listen(3000, () => {
+  console.log('Сервер запущено на порту 3000');
+  
+});
