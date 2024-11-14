@@ -1,0 +1,37 @@
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+# In-memory storage for sensor data
+sensor_data = []
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/save_data', methods=['POST'])
+def save_data():
+    data = request.json
+    sensor_data.append(data)
+    return jsonify({'message': 'Дані сенсора збережено!'})
+
+@app.route('/get_data', methods=['GET'])
+def get_data():
+    return jsonify(sensor_data)
+
+@app.route('/edit_data', methods=['POST'])
+def edit_data():
+    data = request.json
+    sensor_id = data.get('sensor_id')
+    new_pm25 = data.get('pm25')
+    new_pm10 = data.get('pm10')
+
+    for entry in sensor_data:
+        if entry['sensor_id'] == sensor_id:
+            entry['pm25'] = new_pm25 or entry['pm25']
+            entry['pm10'] = new_pm10 or entry['pm10']
+            return jsonify({'message': 'Дані оновлено!'})
+    return jsonify({'error': 'Сенсор не знайдено!'}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)
