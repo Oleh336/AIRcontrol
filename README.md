@@ -1,4 +1,3 @@
-# AIRcontrol
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -36,14 +35,14 @@
             </div>
         </div>
 
-  <div class="row page-section">
+        <div class="row page-section">
             <div class="col-md-6 col-12">
                 <h3>Графік якості повітря</h3>
                 <canvas id="airQualityChart" class="img-fluid"></canvas>
             </div>
         </div>
 
-   <div class="row page-section">
+        <div class="row page-section">
             <div class="col-md-6 col-12">
                 <h3>Поточні дані про якість повітря</h3>
                 <table class="table table-bordered">
@@ -60,22 +59,22 @@
                         </tr>
                     </thead>
                     <tbody id="current-data-table-body">
-                      <!-- Поточні дані будуть додаватися сюди -->
+                        <!-- Поточні дані будуть додаватися сюди -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-  <div class="row page-section">
+        <div class="row page-section">
             <div class="col-12">
                 <h3>Задання якості повітря</h3>
 
-   <div class="nav-buttons mb-4">
+                <div class="nav-buttons mb-4">
                     <button onclick="showPage('sensorForm')" class="btn btn-primary btn-block">Додати Дані</button>
                     <button onclick="showPage('dataView')" class="btn btn-primary btn-block">Переглянути Дані</button>
                 </div>
 
-  <div id="sensorForm" class="page active">
+                <div id="sensorForm" class="page active">
                     <form id="sensor-form">
                         <div class="form-group">
                             <label for="sensor_id">ID Сенсора:</label>
@@ -109,7 +108,7 @@
                     </form>
                 </div>
 
-  <div id="dataView" class="page">
+                <div id="dataView" class="page">
                     <h3>Редагування даних</h3>
                     <button class="btn btn-danger" onclick="clearData()">Очистити всі дані</button>
                 </div>
@@ -117,7 +116,7 @@
         </div>
 
         <!-- Історія даних про якість повітря -->
- <div class="row page-section">
+        <div class="row page-section">
             <div class="col-md-6 col-12">
                 <h3>Історія даних про якість повітря</h3>
                 <table class="table table-bordered">
@@ -140,11 +139,11 @@
         </div>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <script>
+    <script>
         let airQualityData = {
             labels: [],
             datasets: [
